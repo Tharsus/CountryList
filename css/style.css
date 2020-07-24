@@ -11,23 +11,13 @@
   border-radius: 50%;
 }
 
-.arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-
-.nameHdr:hover {
+.nameHdr:hover,
+.populationHdr:hover,
+.areaHdr:hover {
   cursor: pointer;
+}
+
+.table-header {
+  display: flex;
+  justify-content: center;
 }

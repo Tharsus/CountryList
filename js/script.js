@@ -1,9 +1,22 @@
 let loading = document.getElementById('loading');
 let tabCountries = document.querySelector('.tabCountries');
 let countries = null;
+let sort = 'name';
 let nameSort = 'down';
+let populationSort = null;
+let areaSort = null;
+
+const nameHdr = document.querySelector('.nameHdr');
+const nameArrow = document.getElementById('nameArrow');
+const populationHdr = document.querySelector('.populationHdr');
+const populationArrow = document.getElementById('populationArrow');
+const areaHdr = document.querySelector('.areaHdr');
+const areaArrow = document.getElementById('areaArrow');
 
 function start() {
+  populationArrow.style.display = 'none';
+  areaArrow.style.display = 'none';
+
   getCountryData();
   handleSort();
 }
@@ -55,12 +68,16 @@ function render() {
 }
 
 function handleSort() {
-  const nameHdr = document.querySelector('.nameHdr');
-  const nameArrow = document.getElementById('nameArrow');
   nameHdr.addEventListener('click', () => {
+    if (sort !== 'name') {
+      sort = 'name';
+      nameSort = 'up';
+      nameArrow.style.display = 'inline';
+      populationArrow.style.display = 'none';
+      areaArrow.style.display = 'none';
+    }
     if (nameSort === 'down') {
-      nameArrow.classList.remove('down');
-      nameArrow.classList.add('up');
+      nameArrow.textContent = 'arrow_drop_up';
       nameSort = 'up';
 
       countries.sort((a, b) => {
@@ -69,13 +86,62 @@ function handleSort() {
 
       render();
     } else {
-      nameArrow.classList.remove('up');
-      nameArrow.classList.add('down');
+      nameArrow.textContent = 'arrow_drop_down';
       nameSort = 'down';
 
       countries.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
+
+      render();
+    }
+  });
+
+  populationHdr.addEventListener('click', () => {
+    if (sort !== 'population') {
+      sort = 'population';
+      populationSort = 'up';
+      nameArrow.style.display = 'none';
+      populationArrow.style.display = 'block';
+      areaArrow.style.display = 'none';
+    }
+    if (populationSort === 'down') {
+      populationArrow.textContent = 'arrow_drop_up';
+      populationSort = 'up';
+
+      countries.sort((a, b) => b.population - a.population);
+
+      render();
+    } else {
+      populationArrow.textContent = 'arrow_drop_down';
+      populationSort = 'down';
+
+      countries.sort((a, b) => a.population - b.population);
+
+      render();
+    }
+  });
+
+  areaHdr.addEventListener('click', () => {
+    if (sort !== 'area') {
+      sort = 'area';
+      areaSort = 'up';
+      nameArrow.style.display = 'none';
+      populationArrow.style.display = 'none';
+      areaArrow.style.display = 'block';
+    }
+    if (areaSort === 'down') {
+      areaArrow.textContent = 'arrow_drop_up';
+      areaSort = 'up';
+
+      countries.sort((a, b) => b.area - a.area);
+
+      render();
+    } else {
+      areaArrow.textContent = 'arrow_drop_down';
+      areaSort = 'down';
+
+      countries.sort((a, b) => a.area - b.area);
 
       render();
     }
