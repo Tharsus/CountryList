@@ -1,6 +1,12 @@
 let loading = document.getElementById('loading');
 let tabCountries = document.querySelector('.tabCountries');
 let countries = null;
+let nameSort = 'down';
+
+function start() {
+  getCountryData();
+  handleSort();
+}
 
 async function getCountryData() {
   const res = await fetch('http://restcountries.eu/rest/v2/all');
@@ -31,7 +37,7 @@ function render() {
     countries.forEach((country) => {
       const countryHTML = `
       <tr>
-        <td><img class="flag" src="${country.flag}"></img></td>
+        <td><img class="flag" src="${country.flag}" alt="${country.name}"></img></td>
         <td>${country.name}</td>
         <td>${country.region}</td>
         <td>${country.population}</td>
@@ -48,4 +54,32 @@ function render() {
   renderTable();
 }
 
-getCountryData();
+function handleSort() {
+  const nameHdr = document.querySelector('.nameHdr');
+  const nameArrow = document.getElementById('nameArrow');
+  nameHdr.addEventListener('click', () => {
+    if (nameSort === 'down') {
+      nameArrow.classList.remove('down');
+      nameArrow.classList.add('up');
+      nameSort = 'up';
+
+      countries.sort((a, b) => {
+        return b.name.localeCompare(a.name);
+      });
+
+      render();
+    } else {
+      nameArrow.classList.remove('up');
+      nameArrow.classList.add('down');
+      nameSort = 'down';
+
+      countries.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+
+      render();
+    }
+  });
+}
+
+start();
